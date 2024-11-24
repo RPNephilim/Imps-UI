@@ -1,28 +1,23 @@
-import { useState } from "react";
-import Login from "../../components/login/Login";
+import { createContext, useState } from 'react';
 import './Home.css'
+import { Header } from '../../components/header/Header';
+import background from '../../assets/thousand_sunny_go.jpg';
 
-function Home() {
-    const [loginWidget, setLoginWidget] = useState(false);
+export const OpenLoginContext = createContext();
 
-    const revertLoginWidget = (e) => {
-        setLoginWidget(!loginWidget)
-    }
+export function Home() {
 
-    const blurred = loginWidget?"w-full bg-sky-700 text-slate-50 p-8 z-0 blur-sm":"w-full bg-sky-700 text-slate-50 p-8 z-0 blur-none";
+    const [openLogin, setOpenLogin] = useState(false);
+    const bodyClass = openLogin ? "h-screen bg-cover blur-sm" : "h-screen bg-cover bg-center blur-none";
     return (
-        <div>
-            <Login render={loginWidget}/>
-            <div className={blurred} >
-                HOME
-                <button onClick={revertLoginWidget} className="float-right">Login</button>
-            </div>
-            <div className="h-screen">
-                hell
-            </div>
-        </div>
+        <>
+            <OpenLoginContext.Provider value={{openLogin, setOpenLogin}}>
+                <Header />
+                <div className={bodyClass} style={{backgroundImage: `url(${background})`}}>
+                    Body
+                </div>
+            </OpenLoginContext.Provider>
+        </>
 
     );
 }
-
-export default Home;
