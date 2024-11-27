@@ -4,15 +4,14 @@ import './Login.css';
 import { baseUrl, testUrl, prisonUserEndpoint } from "../imps-service/ImpsService";
 import axios from 'axios';
 import { OpenLoginContext } from "../../pages/homepage/Home";
-import { LoggedInContext, UserContext } from '../../App';
+import { AuthContext, LoggedInContext, UserContext } from '../../App';
 
 export default function Login() {
 
     const { openLogin, setOpenLogin } = useContext(OpenLoginContext);
-
     const { setIsLoggedIn } = useContext(LoggedInContext);
-
     const {user, setUser} = useContext(UserContext);
+    const {setAuth} = useContext(AuthContext);
 
     const [username, setUsername] = useState("");
     const updateUsername = (e) => {
@@ -32,14 +31,18 @@ export default function Login() {
                 password: password
             }
         })
-        .catch((err) => {
-            console.log("Unable to login to due error"+err);
-        })
         .then((response) => {
             getUser();
             setIsLoggedIn(true);
+            setAuth({
+                username: username,
+                password: password
+            })
             setOpenLogin(false);
             console.log("TestUrl: "+response.data);
+        })
+        .catch((err) => {
+            console.log("Unable to login to due error"+err);
         });
 
     }

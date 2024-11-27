@@ -1,29 +1,25 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { OpenLoginContext } from "../../pages/homepage/Home";
 import { LoggedInContext, UserContext } from "../../App";
 import { FaRegUserCircle } from "react-icons/fa";
+import { UserDropdown } from "../user-dropdown/UserDropdown";
 
 export function User() {
 
     const { openLogin, setOpenLogin } = useContext(OpenLoginContext);
+    const { isLoggedIn } = useContext(LoggedInContext);
+    const { user } = useContext(UserContext);
 
-    const { isLoggedIn, setIsLoggedIn } = useContext(LoggedInContext);
-    const { user, setUser } = useContext(UserContext);
+    const [openDropdown, setOpenDropdown] = useState(false);
 
     const openLoginWidget = (e) => {
         console.log("user: " + user.name);
         setOpenLogin(!openLogin);
     }
 
-    const logoutUser = () => {
-        setIsLoggedIn(false);
-        setUser({
-            name: "",
-            username: "",
-            roles: []
-        });
-        console.log("Logout successful");
+    const toggleDropdown = () => {
+        setOpenDropdown(!openDropdown);
     }
 
     if (!isLoggedIn) {
@@ -36,8 +32,10 @@ export function User() {
     return (
         <>
             <div className="float-right">
-                <FaRegUserCircle className="inline" /> {user.name}
-                <button onClick={logoutUser} className="block">Logout</button>
+                <div className="inline cursor-pointer" onClick={toggleDropdown}>
+                    <FaRegUserCircle className="inline"/> {user.name}
+                </div>
+                <UserDropdown openDropdown={openDropdown}/>
             </div>
 
         </>

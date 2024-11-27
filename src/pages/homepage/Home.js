@@ -9,12 +9,13 @@ export function Home() {
 
     const [openLogin, setOpenLogin] = useState(false);
     const bodyClass = openLogin ? "h-screen bg-cover blur-sm" : "h-screen bg-cover bg-center blur-none";
+
     return (
         <>
             <OpenLoginContext.Provider value={{openLogin, setOpenLogin}}>
                 <Header />
                 <div className={bodyClass} style={{backgroundImage: `url(${background})`}}>
-                    Body
+                    
                 </div>
             </OpenLoginContext.Provider>
         </>
